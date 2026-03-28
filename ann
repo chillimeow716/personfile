@@ -1,0 +1,465 @@
+import React, { useState } from 'react';
+import { 
+  User, BookOpen, Heart, Award, Globe, MessageSquare, Mail, Phone, Calendar, Zap, Star, 
+  Users, Briefcase, CheckCircle, FileText, ChevronRight, MapPin, ClipboardCheck, GraduationCap, 
+  Layout, Network, X, ExternalLink, Image as ImageIcon, ZoomIn, ZoomOut, RotateCcw, Mic, 
+  Presentation, FileSearch, Images, PlayCircle, Video, List, PlaneTakeoff, Share2, 
+  MessagesSquare, History, ClipboardList, BarChart3, FileType, Newspaper, TrendingUp, 
+  ChevronLeft, UserCheck, Quote, Target, Users2, CalendarCheck, Sparkles, Compass, Brain, MousePointer2
+} from 'lucide-react';
+
+const App = () => {
+  const [activeTab, setActiveTab] = useState('home');
+  const [selectedDoc, setSelectedDoc] = useState(null);
+  const [zoomScale, setZoomScale] = useState(1);
+  const [modalView, setModalView] = useState('default'); 
+  const [currentGalleryUrl, setCurrentGalleryUrl] = useState(null);
+  const [subView23, setSubView23] = useState('text'); 
+  const [subView17, setSubView17] = useState('pdf'); 
+  const [subViewObs, setSubViewObs] = useState('slides'); // 'slides', 'plan'
+  const [galleryIndex, setGalleryIndex] = useState(0);
+
+  const profileImageId = "1MhyloNXTCCL4-bupz_BjFkpT5ovo646Q"; 
+  const getImageUrl = (id) => `https://lh3.googleusercontent.com/d/${id}`;
+
+  const scrollToSection = (id) => {
+    setActiveTab(id);
+    if (id === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
+  const stats = [
+    { label: '教育總年資', value: '13年', icon: <Calendar className="w-5 h-5" /> },
+    { label: '服務本校', value: '9年', icon: <Briefcase className="w-5 h-5" /> },
+    { label: '專業進修', value: '263.5hr', icon: <BookOpen className="w-5 h-5" /> },
+    { label: '繁星績效', value: '全國前10', icon: <Star className="w-5 h-5" /> },
+  ];
+
+  const highlights = [
+    { title: "課程創新：Podcast 實作", content: "創立「生涯 E-Talker」社群，引導學生錄製 Podcast，從資訊閱聽者轉化為數位內容創作者。", icon: <Zap className="text-yellow-500" /> },
+    { title: "國際領航：STEAM 交流", content: "執行澳洲昆士蘭 STEAM 交流計畫，將輔導思維融入科技教育，開拓學生國際視野。", icon: <Globe className="text-blue-500" /> },
+    { title: "專業傳承：實習督導", content: "長期擔任臺師大實習心理師督導，引領後進將理論落地於高中校園實務。", icon: <Users className="text-green-500" /> }
+  ];
+
+  const studentCards = [
+    "1UQq0tue-6rSUrMpxE-mAU0Kk6K8Gp8Vl", "1xTzxz_TGAzf2Xu3QRtWUF-vBrDNYyA7T",
+    "1JxrYW-YQd0MD4nEjcGpWp-DusZGfTZ6c", "1eLdAeJVDe8FojcJgskUmF_OohOLX_0I1",
+    "1BbWv_aRxYCvpTnVnAexkT3NDxZQ-t68j", "1r-5UkrkAETHMNUFOsZHJ6LUESP3B_YO9",
+    "1ibaHFYexcBdBXkKexJrRdSob2avAZDOh", "1O2eJzV46anMFpbIMQJG-1DHDnCyhP6pF"
+  ];
+
+  const starNews = [
+    { date: "2026-03-18", title: "新北繁星放榜 2,224 人上榜 逾 8 成在地就學展現升學實力", source: "新北市政府教育局", summary: "115 學年度大學繁星推薦放榜，新北市共有 42 所公私立高中參與，錄取率達 64.07%，展現卓越教學成果。", url: "https://www.ntpc.edu.tw/home.jsp?id=d127e0ce0f4f407b&act=be4f48068b2b0031&dataserno=fecf5609fbdae6e64ffcce1fe5b2546d" },
+    { date: "2024-03-19", title: "全國繁星錄取人數前 10 名 新北高中錄取 98 名並列全國第 4", source: "PeoPo 公民新聞", summary: "113 學年度大學繁星推薦結果揭曉，新北高中錄取 98 名學生，展現該校在繁星升學輔導上的強大競爭力。", url: "https://www.ntpc.edu.tw/home.jsp?id=d127e0ce0f4f407b&act=be4f48068b2b0031&dataserno=7e78e0de0cf5a458779b0f8682f227bb" },
+    { date: "2023-03-21", title: "大學繁星放榜 新北高中錄取 102 人名列全國第 7", source: "Newtalk新聞", summary: "112 學年度繁星放榜，新北高中錄取人數再度突破百人，位居全國第 7，輔導成效深受各界肯定。", url: "https://newtalk.tw/news/view/2023-03-21/862848" }
+  ];
+
+  const evidenceCategories = [
+    {
+      name: "教師課程發展與教學績效",
+      icon: <GraduationCap className="text-blue-600" />,
+      docs: [
+        { id: "1-1", title: "未來想像與生涯進路滿意度資料", directImageUrl: "https://lh3.googleusercontent.com/d/1uYPXUNjor1t7DDh7SKHzBv1U1T2Xs7su", fullUrl: "https://drive.google.com/file/d/1JnoVDJvc-Qdny-G7hL34WetPM4lrW1Rw/view?usp=drive_link" },
+        { id: "1-2", title: "學生錄製 Podcast 檔案", directImageUrl: "https://lh3.googleusercontent.com/d/1WJcIzy0RnaG5UzEWByYYaDWuKujvCkCT", podcastUrl: "https://drive.google.com/drive/folders/1Zo7LQFfTByNd_4RAMWoWPDr_Y8oujt-z?usp=drive_link" },
+        { id: "1-3", title: "職業訪談教案及作品成果", isEmbedded: true, embedUrl: "https://drive.google.com/file/d/1sFqcQTABYwlZyFphZzzzncqF7vZYhaY_/preview", outcomes: [{ label: "作品 1", url: "https://drive.google.com/file/d/1q8eZLrBVRuXmlr1pJUKB_OeoXXXUtixO/view?usp=drive_link" }, { label: "作品 2", url: "https://drive.google.com/file/d/1QpLpS_vhtkln8CLTrST620z_soNs-trw/view?usp=drive_link" }] },
+        { id: "1-4", title: "課程外部資源活動照片", isEmbedded: true, embedUrl: "https://drive.google.com/file/d/1lSGXtaGwVNnAKv8xHJp1Rh3MTQVMwCDb/preview", outcomes: [{ label: "活動照片", url: "https://drive.google.com/file/d/1n2RACGT1z9WjUthRkTZ7D1GHHQoRdZYL/view?usp=drive_link" }] },
+        { id: "1-5", title: "學生科系實查教案與報告", isEmbedded: true, embedUrl: "https://drive.google.com/file/d/16bZ4BXYktqPQ2WgV7oxadbvriNRBCI0K/preview", outcomes: [{ label: "成果 1", url: "https://drive.google.com/file/d/1RPyZRdy_pCb2zhnFyzUEPAUMUMrKIXvI/view?usp=drive_link" }, { label: "成果 2", url: "https://drive.google.com/file/d/1IkuE2xeRemsw3hFx3SGBfJKfFoNzzS9u/view?usp=drive_link" }, { label: "成果 3", url: "https://drive.google.com/file/d/1hoPWUBCbEWLT9Vw23PrjqQV0dFCKfygS/view?usp=drive_link" }, { label: "成果 4", url: "https://drive.google.com/file/d/1qk4pLi9M8pViAeipUQwvoFV_rVG0rbX8/view?usp=drive_link" }] },
+        { id: "1-6", title: "學生課程成果彙整檔案作品", isEmbedded: true, embedUrl: "https://drive.google.com/file/d/1FwTDFRrd7VtYvTpKEn9v_NrKHWd-hceZ/preview", outcomes: [{ label: "成果 1", url: "https://drive.google.com/file/d/1NRUDmPcv4FolcoN0uLoJYaJBU7CC4VNn/view?usp=drive_link" }, { label: "成果 2", url: "https://drive.google.com/file/d/1j2-WNzpRqLHFi-oD9nCQ0ccXNJtUV89B/view?usp=drive_link" }, { label: "成果 3", url: "https://drive.google.com/file/d/1AbRtksywOLKL53cYwvv2HiuqvJR3YhcL/view?usp=drive_link" }, { label: "成果 4", url: "https://drive.google.com/file/d/10dTD4tKOk1PVUyIDbRQmVjmPnEJcyFzx/view?usp=drive_link" }, { label: "成果 5", url: "https://drive.google.com/file/d/1mE3YcsW0OxT6pXXzzoKepsw_g5tJsXEn/view?usp=drive_link" }, { label: "成果 6", url: "https://drive.google.com/file/d/1MH_LivXEg_kcMcpH9polB6WJKG2oS5X9/view?usp=drive_link" }] },
+        { id: "1-7", title: "初探心理學教案與分享照片", isEmbedded: true, special17: true, embedUrl: "https://drive.google.com/file/d/1oQEVnHM_mx37lkBaR8dV3unlMH8UEsdz/preview", images: ["https://lh3.googleusercontent.com/d/1cujD64V4uXPN2bQpXkZ7pqvdHkXpUm36", "https://lh3.googleusercontent.com/d/1pR2n3mI5sy6kduxwLg3gIZ53fjYP_hkv", "https://lh3.googleusercontent.com/d/112aeB-1A3VJVI6eFcCbZP-pWlcj2m7fJ", "https://lh3.googleusercontent.com/d/1S-ra2RyHH-2lVfyX9i8LuiP6tTrtKgs6", "https://lh3.googleusercontent.com/d/1VxKC5yW-783BUsuWhAKSWv5JYoUv9DVo", "https://lh3.googleusercontent.com/d/19cfY82gJuJ53lF49lKZCe1dQXOZ9zNpX", "https://lh3.googleusercontent.com/d/1E2cERoYm5DeeH2woCxT5acE9eLx4xOmU"], outcomes: [{ label: "教學說明", url: "https://drive.google.com/file/d/1ZSJ_tYiDCMTJIvvpO76ikfyEUWXXh9G4/view?usp=drive_link" }, { label: "成果 1", url: "https://drive.google.com/file/d/1mtsmXU98RiT3l0aIoGT0hU1BV9Z_vinm/view?usp=drive_link" }, { label: "成果 2", url: "https://drive.google.com/file/d/16dvlei-tWhMpYjP7QcOL_e61foDohQTd/view?usp=drive_link" }, { label: "成果 3", url: "https://drive.google.com/file/d/1DnaKu48j99I2suWykr0Lexlv5kJw1Zyv/view?usp=drive_link" }] }
+      ]
+    },
+    {
+      name: "班級經營暨學生輔導",
+      icon: <Heart className="text-rose-600" />,
+      docs: [
+        { id: "2-1", title: "輔導/家庭/生命教育小組證書", externalUrl: "https://drive.google.com/file/d/1Eypk1gBIhdrFaaMtQtdooOf7iBFUSqAY/view?usp=drive_link" },
+        { id: "2-2", title: "輔導工作委員會工作計畫", isEmbedded: true, embedUrl: "https://drive.google.com/file/d/18s9zmIktfDrLiwXLuKfDBYyWaGZpXhJa/preview", outcomes: [{ label: "114計畫", url: "https://drive.google.com/file/d/1jM148v0Q_IrSGER9uKSUTrBm1VYtTPCh/view?usp=drive_link" }, { label: "113計畫", url: "https://drive.google.com/file/d/13RtuDf3r0ec2XlCAShxp2x37icwnT_qP/view?usp=drive_link" }, { label: "112計畫", url: "https://drive.google.com/file/d/11Q3utjIUTC_61wkhA8eLCHVeU5twRIIv/view?usp=drive_link" }, { label: "111計畫", url: "https://drive.google.com/file/d/1tBPd1KvNi9Li0w26UIKLQvs0hlo7BM4Y/view?usp=drive_link" }, { label: "110計畫", url: "https://drive.google.com/file/d/1ZguD40H-uKnQiusoLpOSH3D-ycrQuRR2/view?usp=drive_link" }] },
+        { id: "2-3", title: "輔導學生及系統合作次數報表", special23: true, stat1Url: "https://lh3.googleusercontent.com/d/1HAn3ePxYyTmWMnzYzQv9v4LB_FeY9bOp", stat2Url: "https://lh3.googleusercontent.com/d/1RdlfZfqVGOw3tal3rJRbv7HW9-vVLwHg", stat3Url: "https://lh3.googleusercontent.com/d/1xp2xqSBBGBP6JazXi262xoHdzt4AWfvW" },
+        { id: "2-4", title: "繁星推薦協調會活動照片" },
+        { id: "2-5", title: "歷年大學繁星錄取榜單及新聞", special25: true, statsUrl: "https://www.ntsh.ntpc.edu.tw/p/412-1000-744.php?Lang=zh-tw" },
+        { id: "2-6", title: "面試經驗傳承分享網址", externalUrl: "https://www.ntsh.ntpc.edu.tw/p/412-1000-581.php?Lang=zh-tw" }
+      ]
+    },
+    {
+      name: "專業成長與服務熱忱",
+      icon: <ClipboardCheck className="text-emerald-600" />,
+      docs: [
+        { id: "3-1", title: "生涯 E-Talker 播課社群成果報告" },
+        { id: "3-2", title: "生涯 E-Talker 播課上架網址", externalUrl: "https://open.spotify.com/show/29z3po1dpBbJq1tc5rsxPM" },
+        { id: "3-3", title: "歷年辦理各式知能研習列表" },
+        { id: "3-4", title: "輔導室活動照片" },
+        { id: "3-5", title: "全國在職進修網研習全紀錄", directImageUrl: "https://lh3.googleusercontent.com/d/1TO4u9xTKMHGuBPDMpAWwVIKi2XsW2OEn", studyOverviewUrl: "https://drive.google.com/file/d/1lpL-GZA6J9T8anKBBY6JhXWiKuDvyGR-/view?usp=drive_link" },
+        { id: "3-6", title: "擔任實習心理師督導公文", special36: true, docLinks: [{ label: "112公文", url: "https://drive.google.com/file/d/13np2zCBsj9H-AJYYkSVWODpvvYnPq0Qn/view?usp=drive_link" }, { label: "113公文", url: "https://drive.google.com/file/d/1Auzc7X9LpI5NKIec0e8XPh0-wLirPVgE/view?usp=drive_link" }, { label: "114公文", url: "https://drive.google.com/file/d/1BC9TujtlabsmZpwzlLgvoZtb63F5r-yQ/view?usp=drive_link" }] }
+      ]
+    },
+    {
+      name: "行政合作與公共關係",
+      icon: <Network className="text-purple-600" />,
+      docs: [
+        { id: "4-1", title: "行政聯繫 Line 溝通截圖", gallery: [{ label: "主畫面", url: "https://lh3.googleusercontent.com/d/1E80bbesv3p34nPuHodq1C2Aw5Gs1dRDb" }, { label: "截圖 1", url: "https://lh3.googleusercontent.com/d/1jSMvPdfoRnLcAICzB3FlkMBiEslemDK1" }, { label: "截圖 2", url: "https://lh3.googleusercontent.com/d/1Gv_e1wQDan8INThBaK2S1GS4oy7zfizz" }, { label: "截圖 3", url: "https://lh3.googleusercontent.com/d/1f4en9t1n1WeqDrlNr4oII3NmuDM5tAWF" }] },
+        { id: "4-2", title: "資源活動連結照片" },
+        { id: "4-3", title: "在地就學大聯盟成果與影片", directImageUrl: "https://lh3.googleusercontent.com/d/16JmWGAY0J-GDVCeTEozIZnnA2-8tmOf1", videoLink: "https://www.youtube.com/watch?v=C1Tx-Fopr6I", activityLinks: [{ label: "蒞校參訪", url: "https://drive.google.com/file/d/1GjYe1VAybJi7j_pUmYb2tzhmNLU4Atn8/view?usp=drive_link" }, { label: "特色課程", url: "https://drive.google.com/file/d/1Ro0roN_Ho-jRzrdPkEnwEGiiGO6ZYNiP/view?usp=drive_link" }, { label: "成果展", url: "https://drive.google.com/file/d/1IafF-k9hdP1OTKq5m5ciiwHF5_j0qATL/view?usp=drive_link" }] },
+        { id: "4-4", title: "澳洲出國報告與知識分享表", directImageUrl: "https://lh3.googleusercontent.com/d/1XWOUhxKfOJFSBF53HA5H9L6mDs3Zpqyc", reportLinks: [{ label: "114報告", url: "https://drive.google.com/file/d/1ocJA3o5vUarbmxaqgfhUo__f5ndNWJ4-/view?usp=drive_link", type: 'report' }, { label: "113報告", url: "https://drive.google.com/file/d/12qvWJZWxDJ1Bclxb-4htrL4aS6YFTQN3/view?usp=drive_link", type: 'report' }] }
+      ]
+    }
+  ];
+
+  const handleZoomIn = () => setZoomScale(prev => Math.min(prev + 0.5, 6));
+  const handleZoomOut = () => setZoomScale(prev => Math.max(prev - 0.5, 0.5));
+  const handleResetZoom = () => setZoomScale(1);
+
+  const nextPhoto = () => { if (selectedDoc?.images) { setGalleryIndex((prev) => (prev + 1) % selectedDoc.images.length); setZoomScale(1); } };
+  const prevPhoto = () => { if (selectedDoc?.images) { setGalleryIndex((prev) => (prev - 1 + selectedDoc.images.length) % selectedDoc.images.length); setZoomScale(1); } };
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
+      {/* 導覽列 */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="text-xl font-bold text-teal-700 underline decoration-teal-500/30 decoration-4 underline-offset-4 font-serif italic tracking-tight cursor-pointer" onClick={() => scrollToSection('home')}>蔡雅安 Tsai Ya-An</div>
+          <div className="hidden md:flex space-x-8 text-sm font-medium">
+            {[
+              { id: 'home', label: '首頁' },
+              { id: 'philosophy', label: '教育理念' },
+              { id: 'observation', label: '教學訪視' },
+              { id: 'deeds', label: '重要獎項' },
+              { id: 'stories', label: '教育愛故事' },
+              { id: 'evidence', label: '佐證清單' }
+            ].map((item) => (
+              <button key={item.id} onClick={() => scrollToSection(item.id)} className={`transition-colors ${activeTab === item.id ? 'text-teal-600 font-bold' : 'text-slate-500 hover:text-teal-600'}`}>{item.label}</button>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero 區塊 */}
+      <header className="bg-white border-b border-slate-100 py-16 px-6">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
+          <div className="relative shrink-0 text-nowrap">
+            <div className="w-48 h-48 md:w-64 md:h-64 rounded-3xl bg-teal-100 flex items-center justify-center overflow-hidden border-4 border-white shadow-xl">
+              <img src={getImageUrl(profileImageId)} alt="蔡雅安老師" className="w-full h-full object-cover" />
+            </div>
+            <div className="absolute -bottom-4 -right-4 bg-teal-600 text-white p-4 rounded-xl shadow-lg"><span className="block text-xs uppercase opacity-80 font-semibold tracking-wider">現職</span><span className="text-lg font-bold">輔導資料組長</span></div>
+          </div>
+          <div className="flex-1 text-center md:text-left text-wrap">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-slate-800 mb-4 tracking-tight">蔡雅安 <span className="text-xl font-normal text-slate-500">Tsai Ya-An</span></h1>
+            <p className="text-xl text-teal-600 font-medium mb-6 italic leading-relaxed">「教育是深度的連結與堅定的陪伴。」</p>
+            <div className="flex flex-wrap justify-center md:justify-start gap-4 mb-8">
+              <span className="flex items-center gap-1 px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium"><MapPin size={14}/> 新北高中</span>
+              <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium text-nowrap">生涯規劃與未來想像</span>
+              <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium text-nowrap">清華大學心輔系所</span>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start text-slate-600">
+              <div className="flex items-center gap-2 text-sm font-medium"><Mail size={18} /><span>freakjoy@apps.ntpc.edu.tw</span></div>
+              <div className="flex items-center gap-2 text-sm font-medium"><Phone size={18} /><span>02-28577326#404</span></div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* 統計看板 - 已根據要求放大說明文字 */}
+      <section className="max-w-6xl mx-auto -mt-10 px-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {stats.map((stat, idx) => (
+            <div key={idx} className="bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center hover:-translate-y-1 transition-transform">
+              <div className="w-10 h-10 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center mb-3">{stat.icon}</div>
+              <div className="text-2xl font-bold text-slate-800">{stat.value}</div>
+              {/* 修正：將說明文字放大至 text-sm 並維持適當字距 */}
+              <div className="text-sm text-slate-500 font-bold uppercase tracking-wider mt-1">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <main className="max-w-6xl mx-auto px-6 py-16 space-y-24">
+        {/* 教育理念 */}
+        <section id="philosophy" className="grid md:grid-cols-2 gap-12 items-start scroll-mt-20 text-wrap">
+          <div className="space-y-6 text-wrap">
+            <h2 className="text-3xl font-bold text-slate-800 flex items-center gap-3 font-serif"><Heart className="text-rose-500" /> 教育理念</h2>
+            <div className="space-y-4 text-slate-600 leading-relaxed text-lg">
+              <p>我深信<strong>「關係優先於知識」</strong>。輔導工作不僅是解決問題，更是建立在深厚連結上的生命陪伴。透過真誠理解接住每個孩子，引領他們看見潛能。</p>
+              <div className="bg-teal-50 p-6 rounded-2xl border-l-4 border-teal-500 italic text-teal-800 shadow-sm font-medium">「不只是資源的連結者，更是師生身邊最堅實、不匱乏的夥伴。」</div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            {highlights.map((item, idx) => (
+              <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow">
+                <div className="mt-1 p-2 bg-slate-50 rounded-lg shrink-0">{item.icon}</div>
+                <div><h3 className="font-bold text-slate-800 mb-1">{item.title}</h3><p className="text-sm text-slate-600">{item.content}</p></div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 教學訪視－興趣測驗 */}
+        <section id="observation" className="space-y-12 scroll-mt-20 text-wrap">
+          <div className="bg-gradient-to-br from-teal-50/50 to-white p-8 md:p-12 rounded-[3rem] border border-teal-100 shadow-sm overflow-hidden relative">
+            <div className="absolute -right-20 -top-20 text-teal-50 pointer-events-none"><Compass size={240} /></div>
+            <div className="relative z-10 space-y-10">
+              <div className="text-center md:text-left space-y-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-teal-600 text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-4 shadow-lg shadow-teal-100 text-nowrap">Teaching Observation</div>
+                <h2 className="text-4xl font-black text-slate-800 font-serif tracking-tight text-nowrap">教學訪視：興趣測驗與生涯探索</h2>
+                <p className="text-slate-500 font-medium text-lg italic leading-relaxed">引領高一學子在 Holland 理論的魔鏡中，預見未來的形狀。</p>
+              </div>
+              <div className="grid lg:grid-cols-2 gap-8 text-nowrap">
+                <div className="bg-white/80 backdrop-blur p-8 rounded-3xl border border-teal-50 shadow-sm hover:shadow-md transition-all group text-wrap">
+                  <div className="flex items-center gap-4 mb-6"><div className="p-3 bg-teal-600 text-white rounded-2xl group-hover:rotate-6 transition-transform"><Brain size={24} /></div><h3 className="text-2xl font-black text-slate-800">教案核心重點</h3></div>
+                  <div className="space-y-4 text-slate-600 leading-relaxed font-normal">
+                    <p className="indent-8 text-wrap">以高一生命教育為對象，聚焦協助學生建立<strong>「人與環境適配」</strong>的生涯概念。課程首先釐清「喜歡不等於興趣」，強調真興趣需具備主動投入與滿足感。</p>
+                    <p className="indent-8 text-wrap">透過 <strong>Holland RIASEC 理論</strong>，介紹六大類型及其對應學群，教導測驗結果解讀。強調測驗結果是當下的<strong>參考鏡像</strong>，而非未來的標籤。</p>
+                  </div>
+                </div>
+                <div className="bg-white/80 backdrop-blur p-8 rounded-3xl border border-rose-50 shadow-sm hover:shadow-md transition-all group text-wrap">
+                  <div className="flex items-center gap-4 mb-6"><div className="p-3 bg-rose-500 text-white rounded-2xl group-hover:-rotate-6 transition-transform"><Sparkles size={24} /></div><h3 className="text-2xl font-black text-slate-800 text-wrap">教案亮點特色</h3></div>
+                  <div className="space-y-4 text-slate-600 leading-relaxed font-normal">
+                    <ul className="space-y-4 text-wrap">
+                      <li className="flex gap-4"><div className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-2.5 shrink-0" /><p className="text-wrap"><strong>互動視覺引導：</strong>圖像推測類型與校園情境題，將理論具體化。</p></li>
+                      <li className="flex gap-4"><div className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-2.5 shrink-0" /><p className="text-wrap"><strong>生涯速寫任務：</strong>結合數位工具輸入代碼產出專屬行動想法，落實科技教學。</p></li>
+                      <li className="flex gap-4"><div className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-2.5 shrink-0" /><p className="text-wrap"><strong>賦權式結語：</strong>測驗是「鏡子而非答案」，鼓勵持續探索自身價值。</p></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="pt-6 flex flex-wrap gap-4 justify-center md:justify-start">
+                <button 
+                  onClick={() => { setSelectedDoc({ id: 'obs-test', title: '教學訪視：興趣測驗教案成果', specialObservation: true, slidesUrl: "https://drive.google.com/file/d/1F5OPJmqh0CkR1tOUHvSym8af8wWcJp_7/preview", planUrl: "https://drive.google.com/file/d/1ZrjWp2YVhxNwQQlICIFqSgCbamXzlpIy/preview" }); setSubViewObs('slides'); }}
+                  className="flex items-center gap-2 px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-black shadow-lg shadow-teal-200 transition-all hover:scale-105 active:scale-95"
+                >
+                  <Presentation size={20} /> 瀏覽教學檔案成果
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 重要榮譽獎項 */}
+        <section id="deeds" className="space-y-10 scroll-mt-20">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-slate-800 font-serif text-nowrap">重要榮譽獎項</h2>
+            <p className="text-slate-500 mt-2 font-medium">歷年深耕教育現場獲得之市級、教育部肯定</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { label: "繁星推薦績優", desc: "106-114學年度榮獲新北市繁星推薦試務績優人員", tag: "行政" },
+              { label: "友善校園有功", desc: "107-109學年度獲選新北市輔導工作有功人員", tag: "輔導" },
+              { label: "輔導刊物優等", desc: "連續多年編製刊物獲新北市全校性評選優等", tag: "專業" },
+              { label: "品德特色學校", desc: "110年度品德暨生命教育特色學校市級評選獲獎", tag: "全人" },
+              { label: "就業儲蓄帳戶", desc: "承辦教育部青年就業儲蓄帳戶方案成效獲肯定", tag: "生涯" },
+              { label: "數位教學檔案", desc: "榮獲技術高中數位化教師教學檔案製作競賽佳作", tag: "創新" }
+            ].map((item, idx) => (
+              <div key={idx} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-lg transition-all text-wrap">
+                <span className="text-xs font-bold text-teal-600 bg-teal-50 px-3 py-1 rounded-full uppercase tracking-widest">{item.tag}</span>
+                <h3 className="text-xl font-bold mt-4 mb-2 text-slate-800 text-nowrap">{item.label}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 教育愛小故事 */}
+        <section id="stories" className="bg-slate-800 rounded-[3rem] p-8 md:p-16 text-white relative overflow-hidden shadow-xl shadow-slate-200 scroll-mt-20">
+          <div className="absolute top-0 right-0 p-12 opacity-10 pointer-events-none text-white"><MessageSquare size={200} fill="white" /></div>
+          <div className="relative z-10 max-w-3xl space-y-8 text-wrap">
+            <h2 className="text-3xl font-bold flex items-center gap-3 font-serif text-white text-nowrap"><Award className="text-yellow-400" /> 教育愛小故事</h2>
+            <div className="space-y-6 text-slate-300 text-lg leading-relaxed">
+              <p className="text-white font-medium italic text-xl">「那份被看見的感覺，成為他撐下去的重要力量。」</p>
+              <p>高二那年，我只是安靜地聽了一位沮喪學生一節課，陪他整理情緒。一年後畢業前夕，他遞給我一封信，說那次短短的傾聽讓他感受到被理解的力量，重新建立了自信。</p>
+            </div>
+            <div className="pt-4 border-t border-slate-700/50 flex flex-wrap gap-4 text-nowrap">
+              <button onClick={() => { setSelectedDoc({ id: 'cards', title: '來自學生的溫暖與心意', specialCards: true, images: studentCards.map(id => getImageUrl(id)) }); setGalleryIndex(0); setZoomScale(1); }} className="flex items-center gap-3 px-8 py-4 bg-rose-600 hover:bg-rose-500 text-white rounded-2xl font-black shadow-lg shadow-rose-900/20 transition-all hover:scale-[1.03] active:scale-[0.97]"><Heart size={20} fill="currentColor" />查看學生心意卡片</button>
+            </div>
+          </div>
+        </section>
+
+        {/* 佐證清單 */}
+        <section id="evidence" className="space-y-12 pb-20 scroll-mt-20 text-wrap">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-slate-800 font-serif text-nowrap">具體事蹟佐證資料清單</h2>
+            <p className="text-slate-500 mt-2 font-medium">對應遴選推薦書中之各項專業實踐證據</p>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-wrap">
+            {evidenceCategories.map((cat, catIdx) => (
+              <div key={catIdx} className="space-y-4">
+                <div className="flex items-center gap-3 pb-2 border-b-2 border-slate-100">
+                  <div className="bg-white p-2 rounded-lg shadow-sm border border-slate-50 shrink-0">{cat.icon}</div>
+                  <h3 className="text-xl font-bold text-slate-800 tracking-tight text-nowrap">{cat.name}</h3>
+                </div>
+                <div className="grid grid-cols-1 gap-3">
+                  {cat.docs.map((doc, docIdx) => (
+                    <button 
+                      key={docIdx} 
+                      onClick={() => {
+                        if (doc.externalUrl) { window.open(doc.externalUrl, '_blank'); } 
+                        else {
+                          setSelectedDoc(doc);
+                          setZoomScale(1);
+                          setModalView('default');
+                          setSubView23('text');
+                          setSubView17('pdf');
+                          setGalleryIndex(0);
+                        }
+                      }}
+                      className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex items-center gap-4 hover:border-teal-300 hover:bg-teal-50/10 transition-all group text-left w-full hover:shadow-md"
+                    >
+                      <div className="bg-slate-50 p-2 rounded text-[10px] font-black text-teal-600 group-hover:bg-teal-600 group-hover:text-white transition-colors shrink-0">{doc.id}</div>
+                      <div className="font-bold text-slate-700 text-lg flex-1 leading-snug">{doc.title}</div>
+                      <Presentation size={18} className="text-teal-500 shrink-0 opacity-40 group-hover:opacity-100" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      {/* 彈窗內容 */}
+      {selectedDoc && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm">
+          <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-5xl h-[90vh] overflow-hidden flex flex-col relative animate-in fade-in zoom-in duration-200">
+            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-white shrink-0 text-wrap text-nowrap">
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-black text-teal-600 bg-teal-50 px-2 py-0.5 rounded uppercase tracking-widest shrink-0">{selectedDoc.specialCards ? "心靈角落" : selectedDoc.specialObservation ? "教學成果" : `佐證編號 ${selectedDoc.id}`}</span>
+                <h3 className="text-xl font-bold text-slate-800 leading-tight tracking-tight text-wrap">{selectedDoc.title}</h3>
+              </div>
+              <button onClick={() => setSelectedDoc(null)} className="p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors text-slate-500"><X size={22} /></button>
+            </div>
+            <div className="flex-1 overflow-hidden bg-slate-100 flex flex-col">
+              {selectedDoc.specialObservation ? (
+                <div className="flex-1 flex flex-col bg-white overflow-hidden text-nowrap">
+                  <div className="bg-teal-50/50 p-3 border-b border-teal-100 flex justify-center gap-3 shrink-0">
+                    <button onClick={() => setSubViewObs('slides')} className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[11px] font-bold transition-all shadow-sm ${subViewObs === 'slides' ? 'bg-teal-600 text-white shadow-lg shadow-teal-200' : 'bg-white border border-teal-200 text-teal-700 hover:bg-teal-50'}`}><Presentation size={12} /> 教學簡報成果</button>
+                    <button onClick={() => setSubViewObs('plan')} className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[11px] font-bold transition-all shadow-sm ${subViewObs === 'plan' ? 'bg-teal-600 text-white shadow-lg shadow-teal-200' : 'bg-white border border-teal-200 text-teal-700 hover:bg-teal-50'}`}><FileSearch size={12} /> 教案詳細說明</button>
+                  </div>
+                  <iframe src={subViewObs === 'slides' ? selectedDoc.slidesUrl : selectedDoc.planUrl} className="flex-1 w-full border-none" allow="autoplay"></iframe>
+                </div>
+              ) : (selectedDoc.specialCards || (selectedDoc.special17 && subView17 === 'gallery')) ? (
+                <div className="flex-1 flex flex-col bg-slate-800 relative overflow-hidden">
+                   {selectedDoc.special17 && (
+                     <div className="bg-indigo-50/50 p-3 border-b border-indigo-100 flex justify-center gap-3 shrink-0">
+                        <button onClick={() => setSubView17('pdf')} className="flex items-center gap-1.5 px-4 py-1 rounded-full text-[11px] font-bold bg-white border border-indigo-200 text-indigo-700 hover:bg-indigo-50 transition-all"><FileType size={12} /> 教案檔案</button>
+                        <button onClick={() => setSubView17('gallery')} className="flex items-center gap-1.5 px-4 py-1 rounded-full text-[11px] font-bold bg-rose-600 text-white shadow-sm transition-all"><Images size={12} /> 上台報告照片</button>
+                     </div>
+                   )}
+                   <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 bg-black/50 backdrop-blur px-4 py-1.5 rounded-full text-white text-xs font-black shadow-lg text-nowrap"><Sparkles size={14} className="inline mr-1" /> 第 {galleryIndex + 1} / {selectedDoc.images.length} 張</div>
+                   <div className="flex-1 w-full overflow-auto p-4 md:p-8 flex flex-col items-center bg-slate-900/50">
+                      <div className="flex items-center justify-center min-h-full w-full relative">
+                        <button onClick={prevPhoto} className="fixed left-8 top-1/2 -translate-y-1/2 z-30 p-3 bg-white/10 hover:bg-white/30 text-white rounded-full transition-all hover:scale-110 active:scale-95"><ChevronLeft size={40} /></button>
+                        <div className="bg-white rounded-lg shadow-2xl transition-all duration-200 ease-out" style={{ width: `${85 * zoomScale}%`, maxWidth: 'none', minWidth: '300px' }}><img src={selectedDoc.images[galleryIndex]} alt="展示圖片" className="w-full h-auto rounded-lg" /></div>
+                        <button onClick={nextPhoto} className="fixed right-8 top-1/2 -translate-y-1/2 z-30 p-3 bg-white/10 hover:bg-white/30 text-white rounded-full transition-all hover:scale-110 active:scale-95"><ChevronRight size={40} /></button>
+                      </div>
+                   </div>
+                   <div className="bg-slate-900/90 w-full p-4 flex flex-col items-center gap-4 border-t border-white/10 z-20">
+                      <div className="flex gap-6 items-center">
+                        <button onClick={handleZoomOut} className="p-2 hover:bg-white/10 rounded-lg text-white/70"><ZoomOut size={22} /></button>
+                        <input type="range" min="0.5" max="4" step="0.1" value={zoomScale} onChange={(e) => setZoomScale(parseFloat(e.target.value))} className="w-48 h-1.5 accent-teal-500 cursor-pointer" />
+                        <button onClick={handleZoomIn} className="p-2 hover:bg-white/10 rounded-lg text-white/70"><ZoomIn size={22} /></button>
+                        <button onClick={handleResetZoom} className="p-2 hover:bg-white/10 rounded-lg text-white/70"><RotateCcw size={22} /></button>
+                      </div>
+                      <div className="flex gap-2.5 overflow-x-auto p-1 max-w-full no-scrollbar pb-2">
+                        {selectedDoc.images.map((p, i) => (<button key={i} onClick={() => { setGalleryIndex(i); setZoomScale(1); }} className={`w-14 h-14 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${galleryIndex === i ? 'border-rose-500 scale-110 shadow-lg shadow-rose-500/50' : 'border-transparent opacity-40 hover:opacity-100'}`}><img src={p} className="w-full h-full object-cover" /></button>))}
+                      </div>
+                   </div>
+                </div>
+              ) : selectedDoc.special36 ? (
+                <div className="flex-1 flex flex-col bg-white overflow-hidden text-wrap">
+                  <div className="bg-emerald-50/50 p-4 border-b border-emerald-100 flex justify-center items-center shrink-0"><div className="flex items-center gap-2 text-emerald-700 font-black text-sm tracking-widest text-nowrap text-wrap"><UserCheck size={18} /> 師培傳承：實習心理師專業督導歷程</div></div>
+                  <div className="flex-1 overflow-auto p-6 md:p-10 bg-slate-50/30">
+                    <div className="max-w-4xl mx-auto space-y-10">
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="bg-white p-4 rounded-2xl shadow-sm border border-emerald-100 flex flex-col items-center text-center text-nowrap"><CalendarCheck className="text-emerald-500 mb-2" size={24} /><span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-nowrap">指導期間</span><span className="text-lg font-black text-slate-800 text-nowrap">112-114學年度</span></div>
+                        <div className="bg-white p-4 rounded-2xl shadow-sm border border-emerald-100 flex flex-col items-center text-center text-nowrap"><Users2 className="text-emerald-500 mb-2" size={24} /><span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-nowrap">累計指導</span><span className="text-lg font-black text-slate-800 text-nowrap">6 位實習生</span></div>
+                        <div className="bg-white p-4 rounded-2xl shadow-sm border border-emerald-100 flex flex-col items-center text-center text-nowrap"><TrendingUp className="text-emerald-500 mb-2" size={24} /><span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-nowrap">115學年度預計</span><span className="text-lg font-black text-slate-800 text-nowrap">2 位實習生</span></div>
+                      </div>
+                      <div className="relative bg-emerald-600 rounded-3xl p-8 text-white shadow-xl shadow-emerald-100 overflow-hidden text-wrap"><Quote className="absolute top-4 right-4 opacity-20" size={80} /><div className="relative z-10 space-y-4 leading-relaxed font-medium text-lg text-wrap text-nowrap"><p className="indent-8 text-wrap">擔任國立師範大學實習心理師之專業督導，引導實習生將諮商理論實際應用於高中校園輔導情境。累計指導 6 位學生，並預計於 115 學年度指導 2 位。</p></div></div>
+                      <div className="space-y-6">
+                        <h5 className="font-black text-slate-800 flex items-center gap-2 text-xl border-b-2 border-emerald-100 pb-2"><Target className="text-emerald-600" size={24} /> 督導實務具體執行內容</h5>
+                        <div className="grid md:grid-cols-2 gap-4"><div className="flex gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm items-start"><div className="bg-emerald-50 p-2 rounded-xl text-emerald-600 shrink-0"><CheckCircle size={20} /></div><p className="text-slate-600 text-sm leading-relaxed text-wrap">每週固定進行至少 1 小時之個別專業督導，陪伴實習生進行個案討論與技術精進。</p></div><div className="flex gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm items-start"><div className="bg-emerald-50 p-2 rounded-xl text-emerald-600 shrink-0"><CheckCircle size={20} /></div><p className="text-slate-600 text-sm leading-relaxed text-wrap">提供完整輔導資源支持（如教案設計、活動規劃指導等），協助實習生建立實務能力。</p></div></div>
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-6 pb-6 text-wrap">
+                        <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 flex flex-col text-wrap"><div className="bg-teal-600 text-white px-4 py-1 rounded-full text-[10px] font-bold self-start mb-4 uppercase tracking-widest text-nowrap text-wrap text-nowrap">First Semester / 上學期</div><h6 className="font-black text-slate-800 mb-4 text-xl text-nowrap">實習任務規劃</h6><ul className="space-y-4 text-nowrap text-wrap text-nowrap"><li className="flex items-start gap-3 p-3 bg-teal-50/50 rounded-xl text-wrap text-nowrap"><UserCheck size={18} className="mt-1 text-teal-600 shrink-0" /><span className="text-sm font-bold text-teal-900 leading-snug">每個接案服務人次至少每周 2-3 案</span></li>{[{ label: "規劃帶領小團體輔導", icon: <Users2 size={16}/> }, { label: "辦理主題講座", icon: <PlayCircle size={16}/> }, { label: "設計執行主題工作坊", icon: <Layout size={16}/> }].map((item, idx) => (<li key={idx} className="flex items-center gap-3 pl-2 text-wrap text-nowrap"><div className="text-teal-400">{item.icon}</div><span className="text-sm text-slate-600 font-medium">{item.label}</span></li>))}</ul></div>
+                        <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 flex flex-col text-wrap"><div className="bg-rose-600 text-white px-4 py-1 rounded-full text-[10px] font-bold self-start mb-4 uppercase tracking-widest text-nowrap">Second Semester / 下學期</div><h6 className="font-black text-slate-800 mb-4 text-xl text-nowrap">進階實務訓練</h6><div className="flex-1 flex flex-col justify-center items-center text-center p-6 border-2 border-dashed border-rose-100 rounded-2xl"><TrendingUp className="text-rose-300 mb-3" size={48} /><p className="text-sm font-medium text-slate-600 leading-relaxed text-wrap">依實習生個別發展狀況，進行差異化任務安排，強化其專業整合能力。</p></div></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-6 bg-white border-t border-slate-100 flex justify-center gap-3 flex-wrap shrink-0">
+                    {selectedDoc.docLinks?.map((link) => (<a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-2 bg-teal-600 text-white rounded-full text-xs font-bold shadow-md hover:bg-indigo-700 transition-all hover:scale-105 active:scale-95 text-nowrap"><AwardIcon size={14} /> {link.label}</a>))}
+                  </div>
+                </div>
+              ) : selectedDoc.special23 ? (
+                /* 2-3 統計嵌入視圖 */
+                <div className="flex-1 flex flex-col bg-white overflow-hidden text-wrap text-nowrap">
+                  <div className="bg-teal-50/50 p-4 border-b border-teal-100 flex justify-center gap-2 shrink-0 text-wrap text-nowrap">
+                    <button onClick={() => setSubView23('text')} className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all shadow-sm ${subView23 === 'text' ? 'bg-teal-600 text-white' : 'bg-white border border-teal-200 text-teal-700 hover:bg-teal-50'}`}><FileType size={12} /> 文字簡介</button>
+                    <button onClick={() => { setSubView23('stat1'); setZoomScale(1); }} className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all shadow-sm ${subView23 === 'stat1' ? 'bg-rose-600 text-white' : 'bg-white border border-rose-200 text-rose-700 hover:bg-rose-50'}`}><BarChart3 size={12} /> 輔導統計</button>
+                    <button onClick={() => { setSubView23('stat2'); setZoomScale(1); }} className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all shadow-sm ${subView23 === 'stat2' ? 'bg-rose-600 text-white' : 'bg-white border border-rose-200 text-rose-700 hover:bg-rose-50'}`}><BarChart3 size={12} /> 相關統計 (一)</button>
+                    <button onClick={() => { setSubView23('stat3'); setZoomScale(1); }} className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all shadow-sm ${subView23 === 'stat3' ? 'bg-rose-600 text-white' : 'bg-white border border-rose-200 text-rose-700 hover:bg-rose-50'}`}><BarChart3 size={12} /> 相關統計 (二)</button>
+                  </div>
+                  <div className="flex-1 overflow-auto p-10 bg-slate-50">
+                    {subView23 === 'text' ? (
+                      <div className="max-w-3xl mx-auto space-y-6 text-slate-700 text-lg leading-loose font-normal text-wrap text-nowrap"><p className="indent-8 text-wrap">本人擔任校內體育班及音樂班之專責輔導教師，具備 13 年輔導實務經驗，長期服務於第一線學生輔導工作。服務對象涵蓋多元類型學生，累積處理豐富個案經驗。</p></div>
+                    ) : (
+                      <div className="flex flex-col items-center gap-4 h-full text-wrap text-nowrap">
+                        <div className="bg-white/80 backdrop-blur p-2 rounded-xl border border-slate-200 flex gap-4 shrink-0 shadow-sm"><button onClick={handleZoomOut} className="p-1 hover:bg-slate-200 rounded-lg text-slate-600"><ZoomOut size={18} /></button><input type="range" min="0.5" max="3" step="0.1" value={zoomScale} onChange={(e) => setZoomScale(parseFloat(e.target.value))} className="w-24 h-1.5 mt-2.5 accent-teal-600" /><button onClick={handleZoomIn} className="p-1 hover:bg-slate-200 rounded-lg text-slate-600"><ZoomIn size={18} /></button><button onClick={() => setZoomScale(1)} className="p-1 hover:bg-slate-200 rounded-lg text-slate-600"><RotateCcw size={18} /></button></div>
+                        <div className="flex-1 flex items-start justify-center cursor-grab active:cursor-grabbing w-full overflow-auto p-4"><div style={{ width: `${85 * zoomScale}%`, minWidth: '300px' }} className="shadow-xl bg-white rounded-lg"><img src={subView23 === 'stat1' ? selectedDoc.stat1Url : subView23 === 'stat2' ? selectedDoc.stat2Url : selectedDoc.stat3Url} alt="統計圖" className="w-full h-auto rounded-lg" /></div></div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : selectedDoc.isEmbedded ? (
+                <div className="flex-1 flex flex-col bg-slate-200 overflow-hidden text-wrap text-nowrap">
+                   {selectedDoc.id === '1-7' && (
+                     <div className="bg-indigo-50/50 p-3 border-b border-indigo-100 flex justify-center gap-3 shrink-0">
+                        <button onClick={() => setSubView17('pdf')} className="flex items-center gap-1.5 px-4 py-1 rounded-full text-[11px] font-bold bg-indigo-600 text-white shadow-sm transition-all"><FileType size={12} /> 教案檔案</button>
+                        <button onClick={() => { setSubView17('gallery'); setGalleryIndex(0); setZoomScale(1); }} className="flex items-center gap-1.5 px-4 py-1 rounded-full text-[11px] font-bold bg-white border border-rose-200 text-rose-700 hover:bg-rose-50 transition-all shadow-sm"><Images size={12} /> 上台報告照片</button>
+                     </div>
+                   )}
+                   <iframe src={selectedDoc.embedUrl} className="flex-1 w-full border-none" allow="autoplay"></iframe>
+                   <div className="p-4 bg-white border-t border-slate-100 flex justify-center gap-2 flex-wrap shrink-0">
+                    {selectedDoc.outcomes?.map((outcome, idx) => (
+                      <a key={outcome.label} href={outcome.url} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-full text-xs font-semibold transition-all shadow-sm ${idx % 2 === 0 ? 'bg-white border-rose-200 text-rose-700 hover:bg-rose-600 hover:text-white' : 'bg-white border-teal-200 text-teal-700 hover:bg-teal-600 hover:text-white'}`}><ExternalLink size={14} /> {outcome.label}</a>
+                    ))}
+                  </div>
+                </div>
+              ) : (selectedDoc.directImageUrl || selectedDoc.gallery) ? (
+                <div className="flex-1 flex flex-col bg-slate-100 relative overflow-hidden">
+                   <div className="bg-white/90 backdrop-blur border-b border-slate-200 p-3 flex items-center justify-center gap-4 shrink-0 flex-wrap shadow-sm z-10 text-nowrap">
+                      <button onClick={handleZoomOut} className="p-1 hover:bg-slate-200 rounded-lg text-slate-600"><ZoomOut size={20} /></button>
+                      <input type="range" min="0.5" max="4" step="0.1" value={zoomScale} onChange={(e) => setZoomScale(parseFloat(e.target.value))} className="w-32 h-1.5 accent-teal-600" />
+                      <button onClick={handleZoomIn} className="p-1 hover:bg-slate-200 rounded-lg text-slate-600"><ZoomIn size={20} /></button>
+                      <button onClick={handleResetZoom} className="p-1 hover:bg-slate-200 rounded-lg text-slate-600"><RotateCcw size={20} /></button>
+                      <div className="w-px h-6 bg-slate-200 mx-2 hidden sm:block"></div>
+                      <div className="flex items-center gap-3 flex-wrap">
+                        {selectedDoc.fullUrl && <a href={selectedDoc.fullUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-teal-600 hover:underline border-r pr-3 border-slate-200 text-nowrap"><ExternalLink size={16} /> 完整檔案</a>}
+                      </div>
+                   </div>
+                   <div className="flex-1 overflow-auto p-4 md:p-8 flex flex-col items-center text-wrap text-nowrap text-wrap">
+                      <div className="flex items-center justify-center min-h-full w-full">
+                        <div className="bg-white shadow-xl rounded-lg overflow-hidden transition-all duration-200" style={{ width: `${90 * zoomScale}%`, maxWidth: 'none', minWidth: '320px' }}>
+                          <img src={currentGalleryUrl || selectedDoc.directImageUrl} alt="佐證圖" className="w-full h-auto" />
+                        </div>
+                      </div>
+                   </div>
+                </div>
+              ) : (
+                <div className="flex-1 flex flex-col items-center justify-center gap-8 text-center p-12 text-slate-400 text-wrap text-nowrap"><div className="space-y-4 flex flex-col items-center text-wrap text-nowrap"><FileText size={64} strokeWidth={1} /><div><p className="font-bold text-slate-600 text-2xl text-wrap text-nowrap">實體佐證資料</p><p className="text-lg font-medium mt-1 text-wrap text-nowrap">本項目已歸檔於新北高中輔導室，歡迎到校審閱。</p></div></div></div>
+              )}
+            </div>
+            <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-center shrink-0 text-center text-wrap text-nowrap"><p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-wrap text-nowrap text-nowrap">蔡雅安 教師專業作品集 · 數位佐證展示</p></div>
+          </div>
+        </div>
+      )}
+
+      {/* 修正後的 Footer */}
+      <footer className="bg-white border-t border-slate-200 py-12 px-6 text-wrap text-center text-nowrap"><div className="text-xl font-bold text-teal-700 font-serif italic tracking-wider mb-2 text-nowrap text-nowrap">蔡雅安</div><div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-loose text-nowrap text-nowrap">© 2026 蔡雅安 Tsai Ya-An 教師專業數位作品集. All Rights Reserved.</div></footer>
+    </div>
+  );
+};
+
+export default App;
